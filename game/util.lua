@@ -298,6 +298,7 @@ local function setPedComponent(ped, component)
         end
 
         SetPedComponentVariation(ped, component.component_id, component.drawable, component.texture, 0)
+        TriggerEvent('citra-mask-clip:fix')
     end
 end
 

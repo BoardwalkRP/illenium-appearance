@@ -111,49 +111,124 @@ local function filterBlacklistSettings(items, drawableId)
     return blacklistSettings
 end
 
-local function componentBlacklistMap(gender, componentId)
-    local genderSettings = Config.Blacklist[gender].components
-    if componentId == 1 then
-        return genderSettings.masks
-    elseif componentId == 3 then
-        return genderSettings.upperBody
-    elseif componentId == 4 then
-        return genderSettings.lowerBody
-    elseif componentId == 5 then
-        return genderSettings.bags
-    elseif componentId == 6 then
-        return genderSettings.shoes
-    elseif componentId == 7 then
-        return genderSettings.scarfAndChains
-    elseif componentId == 8 then
-        return genderSettings.shirts
-    elseif componentId == 9 then
-        return genderSettings.bodyArmor
-    elseif componentId == 10 then
-        return genderSettings.decals
-    elseif componentId == 11 then
-        return genderSettings.jackets
+local function getComponentJSONOverrides(gender, componentId)
+    local overrides = constants.OVERRIDES[gender]
+
+    if componentId == 1 then -- Mask
+        return overrides.components['berd']
+    elseif componentId == 2 then -- Hair
+        return overrides.components['hair']
+    elseif componentId == 3 then -- Upper body (hands / arms / chest)
+        return overrides.components['uppr']
+    elseif componentId == 4 then -- Legs
+        return overrides.components['lowr']
+    elseif componentId == 5 then -- Bags
+        return overrides.components['hand']
+    elseif componentId == 6 then -- Feet / shoes
+        return overrides.components['feet']
+    elseif componentId == 7 then -- Chains / scarfs
+        return overrides.components['teef']
+    elseif componentId == 8 then -- Shirts
+        return overrides.components['accs']
+    elseif componentId == 9 then -- Armor
+        return overrides.components['task']
+    elseif componentId == 10 then -- Decals
+        return overrides.components['decl']
+    elseif componentId == 11 then -- Jackets
+        return overrides.components['jbib']
     end
 
-    return {}
+    return nil
+end
+
+local function getPropJSONOverrides(gender, propId)
+    local overrides = constants.OVERRIDES[gender]
+
+    if propId == 0 then
+        return overrides.props['head']
+    elseif propId == 1 then
+        return overrides.props['eyes']
+    elseif propId == 2 then
+        return overrides.props['ears']
+    elseif propId == 6 then
+        return overrides.props['lwrist']
+    elseif propId == 7 then
+        return overrides.props['rwrist']
+    end
+
+    return nil
+end
+
+local function componentBlacklistMap(gender, componentId)
+    local genderSettings = Config.Blacklist[gender].components
+    local blacklistMap = {}
+    local compOverrides = getComponentJSONOverrides(gender, componentId)
+
+    if componentId == 1 then
+        blacklistMap = genderSettings.masks
+    elseif componentId == 3 then
+        blacklistMap = genderSettings.upperBody
+    elseif componentId == 4 then
+        blacklistMap = genderSettings.lowerBody
+    elseif componentId == 5 then
+        blacklistMap = genderSettings.bags
+    elseif componentId == 6 then
+        blacklistMap = genderSettings.shoes
+    elseif componentId == 7 then
+        blacklistMap = genderSettings.scarfAndChains
+    elseif componentId == 8 then
+        blacklistMap = genderSettings.shirts
+    elseif componentId == 9 then
+        blacklistMap = genderSettings.bodyArmor
+    elseif componentId == 10 then
+        blacklistMap = genderSettings.decals
+    elseif componentId == 11 then
+        blacklistMap = genderSettings.jackets
+    end
+
+    -- Add in JSON reservation filtering
+    if compOverrides then
+        local drawables = {}
+        for i = compOverrides['start'], compOverrides['end'] do
+            drawables[#drawables+1] = i
+        end
+        blacklistMap[#blacklistMap+1] = {
+            drawables = drawables
+        }
+    end
+
+    return blacklistMap
 end
 
 local function propBlacklistMap(gender, propId)
     local genderSettings = Config.Blacklist[gender].props
+    local blacklistMap = {}
+    local propOverrides = getPropJSONOverrides(gender, propId)
 
     if propId == 0 then
-        return genderSettings.hats
+        blacklistMap =  genderSettings.hats
     elseif propId == 1 then
-        return genderSettings.glasses
+        blacklistMap =  genderSettings.glasses
     elseif propId == 2 then
-        return genderSettings.ear
+        blacklistMap =  genderSettings.ear
     elseif propId == 6 then
-        return genderSettings.watches
+        blacklistMap =  genderSettings.watches
     elseif propId == 7 then
-        return genderSettings.bracelets
+        blacklistMap =  genderSettings.bracelets
     end
 
-    return {}
+    -- Add in JSON reservation filtering
+    if propOverrides then
+        local drawables = {}
+        for i = propOverrides['start'], propOverrides['end'] do
+            drawables[#drawables+1] = i
+        end
+        blacklistMap[#blacklistMap+1] = {
+            drawables = drawables
+        }
+    end
+
+    return blacklistMap
 end
 
 local function getComponentSettings(ped, componentId)
@@ -222,7 +297,13 @@ local function getHairSettings(ped)
     }
 
     if client.isPedFreemodeModel(ped) then
+        local JSONOverride = getComponentJSONOverrides(gender, 2)
         blacklistSettings = filterBlacklistSettings(Config.Blacklist[gender].hair, GetPedDrawableVariation(ped, 2))
+        if JSONOverride then
+            for i = JSONOverride.start, JSONOverride["end"] do
+                blacklistSettings.drawables[#blacklistSettings.drawables+1] = i
+            end
+        end
     end
 
     local settings = {

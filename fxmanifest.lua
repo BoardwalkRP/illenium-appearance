@@ -88,7 +88,9 @@ shared_scripts {
 
 files {
   "web/dist/index.html",
-  "web/dist/assets/*.js"
+  "web/dist/assets/*.js",
+  "mp_f_freemode_01.override.json",
+  "mp_m_freemode_01.override.json",
 }
 
 ui_page "web/dist/index.html"

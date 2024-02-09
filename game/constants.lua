@@ -364,3 +364,8 @@ constants.OFFSETS = {
     body = vec2(1.2, -0.45),
     bottom = vec2(0.7, -0.45),
 }
+
+constants.OVERRIDES = {
+    male = json.decode(LoadResourceFile(GetCurrentResourceName(), 'mp_m_freemode_01.override.json')),
+    female = json.decode(LoadResourceFile(GetCurrentResourceName(), 'mp_f_freemode_01.override.json')),
+}
