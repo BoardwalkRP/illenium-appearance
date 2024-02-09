@@ -1,6 +1,10 @@
 Config.Blacklist = {
     male = {
-        hair = {},
+        hair = {
+            {
+                drawables = {34, 35, 36, 37, 38, 39, 42},
+            },
+        },
         components = {
             masks = {},
             upperBody = {},
