@@ -51,7 +51,7 @@
   },
   "props": {
     "head": {
-      "start": 20,
+      "start": 32,
       "end": 100
     },
     "eyes": {
