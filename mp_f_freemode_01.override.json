@@ -52,55 +52,55 @@
   "props": {
     "head": {
       "start": 32,
-      "end": 100
+      "end": 60
     },
     "eyes": {
       "start": 16,
-      "end": 100
+      "end": 60
     },
     "ears": {
       "start": 0,
-      "end": 100
+      "end": 60
     },
     "mouth": {
       "start": 0,
-      "end": 100
+      "end": 60
     },
     "lhand": {
       "start": 0,
-      "end": 100
+      "end": 60
     },
     "rhand": {
       "start": 0,
-      "end": 100
+      "end": 60
     },
     "lwrist": {
       "start": 2,
-      "end": 100
+      "end": 60
     },
     "rwrist": {
       "start": 0,
-      "end": 100
+      "end": 60
     },
     "hip": {
       "start": 0,
-      "end": 100
+      "end": 60
     },
     "lfoot": {
       "start": 0,
-      "end": 100
+      "end": 60
     },
     "rfoot": {
       "start": 0,
-      "end": 100
+      "end": 60
     },
     "unk604819740": {
       "start": 0,
-      "end": 100
+      "end": 60
     },
     "unk2358626934": {
       "start": 0,
-      "end": 100
+      "end": 60
     }
   }
 }
